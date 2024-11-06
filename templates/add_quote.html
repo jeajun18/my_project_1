@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>명언 추가</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>새로운 명언 추가</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="text">명언:</label><br>
+        <input type="text" id="text" name="text" required><br><br>
+
+        <label for="author">저자:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+
+        <label for="category">카테고리:</label><br>
+        <select name="category" id="category" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <input type="submit" value="추가">
+    </form>
+</body>
+</html>

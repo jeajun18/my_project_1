@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>추천 명언</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>추천 명언</h1>
+    <div class="quotes">
+        {% for quote in top_quotes %}
+            <div class="quotes-container">
+                <p class="quote-text"><strong>"{{ quote.text }}"</strong></p>
+                <p class="quote-author"><em>- {{ quote.author }}</em></p>
+                <p>좋아요 수 : {{ quote.likes }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

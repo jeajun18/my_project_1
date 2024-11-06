@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좋아요</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="quote-container">
+        <div class="quote">
+            <p class="quote-text"><strong>"{{ quote.text }}"</strong></p>
+            <p class="quote-author"><em>- {{ quote.author }}</em></p>
+            <p>현재 좋아요 수 : {{ quote.likes }}</p>
+            <a href="{% url 'like_quote' quote.id %}">좋아요</a>
+        </div>
+
+    </div>
+</body>
+</html>
