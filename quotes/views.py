@@ -1,7 +1,8 @@
 import random
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+
 from .models import Quote
 
 # Create your views here.
@@ -12,14 +13,14 @@ def random_quote(request):
     if quotes:
         quote = random.choice(quotes)
         data = {
-            "text" : quote.text,
-            "author" : quote.author,
-            "category" : quote.category.name,
+            "text": quote.text,
+            "author": quote.author,
+            "category": quote.category.name,
         }
     else:
         data = {
-            "text" : "No quotes available",
-            "author" : "",
+            "text": "No quotes available",
+            "author": "",
         }
 
     return JsonResponse(data)
@@ -34,15 +35,22 @@ def random_quote_by_category(request, category_id):
         quote = random.choice(quotes)
         # 선택된 quote 객체의 정보를 딕셔너리 형태로 구성.
         data = {
-            "text" : quote.text,    # 선택된 Quote의 텍스트
-            "author" : quote.author,    # 선택된 Quote의 저자
-            "category" : quote.category.name,   # 선택된 Quote의 카테고리 이름
+            "text": quote.text,  # 선택된 Quote의 텍스트
+            "author": quote.author,  # 선택된 Quote의 저자
+            "category": quote.category.name,  # 선택된 Quote의 카테고리 이름
         }
     # quotes 가 없을 때, 없다는 메시지를 전달.
     else:
-        data ={
-            "text" : "No quotes available for this category",
-            "author" : "",
+        data = {
+            "text": "No quotes available for this category",
+            "author": "",
         }
     # 구성된 데이터를 JSON 형식으로 응답
     return JsonResponse(data)
+
+
+def like_quote(request, quote_id):
+    quote = get_object_or_404(Quote, id=quote_id)
+    quote.likes += 1
+    quote.save()
+    return JsonResponse({"like": quote.likes})

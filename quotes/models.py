@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 # 명언 모델에 카테고리 필드를 추가하여 주제를 지정할 수 있도록 한다.
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -10,10 +11,9 @@ class Category(models.Model):
         return self.name
 
 
-
 class Quote(models.Model):
-    text = models.CharField(max_length=255) # 명언 내용
-    author = models.CharField(max_length=100) # 명언의 저자
+    text = models.CharField(max_length=255)  # 명언 내용
+    author = models.CharField(max_length=100)  # 명언의 저자
 
     # 다대일 관계를 정의, Quote와 Category 모델간의 ForeignKey 설정.
     # Category : 참고하고자 하는 다른 모델.
@@ -23,9 +23,12 @@ class Quote(models.Model):
     # 예를 들어, category_instance.quotes.all() 을 통해 특정 카테고리에 속한 모든 현재 모델의 객체를 가져올 수 있음.
     # 이 관계는 현재 Quote(N: Many) - Category(1: One)로 설정되어 있으며,
     # 이를 통해 Category 모델에서 각 category 객체에 속하는 모델들을 쉽게 조회 가능
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='quotes', default=1)
-
-
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="quotes", default=1
+    )
+    likes = models.PositiveIntegerField(
+        default=0
+    )  # 명언에 좋아요 수를 기록하는 필드 추가
 
     def __str__(self):
         return f"{self.text} - {self.author}"
