@@ -25,7 +25,7 @@ class Quote(models.Model):
     # 이 관계는 현재 Quote(N: Many) - Category(1: One)로 설정되어 있으며,
     # 이를 통해 Category 모델에서 각 category 객체에 속하는 모델들을 쉽게 조회 가능
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="quotes", default=1
+        Category, on_delete=models.CASCADE, related_name="quotes"
     )
     likes = models.PositiveIntegerField(
         default=0

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import QuoteForm
-from .models import Favorite, Quote
+from .models import Category, Favorite, Quote
 
 # Create your views here.
 
@@ -84,7 +84,12 @@ def add_quote(request):
             return redirect("quote_list")
     else:
         form = QuoteForm()
-    return render(request, "quotes/add_quote.html", {"form": form})
+
+    categories = Category.objects.all()
+
+    return render(
+        request, "quotes/add_quote.html", {"form": form, "categories": categories}
+    )
 
 
 def recommended_quotes(request):
@@ -99,4 +104,5 @@ def recommended_quotes(request):
     # data : 위에서 생성된 추천 명언들의 리스트
     # safe=False : 기본적으로 JsonResponse는 딕셔너리 형식의 데이터를 JSON으로 변환하는데,
     # 리스트는 안전하게 변환이 가능하기 때문에 safe=False 설정을 해줘야한다.
-    return JsonResponse(data, safe=False)
+    # return JsonResponse(data, safe=False)
+    return render(request, "quotes/recommended_quotes.html", {"quotes": data})

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>랜덤 명언</title>
+    <title>즐겨찾기 추가</title>
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -11,9 +12,7 @@
         <div class="quote">
             <p class="quote-text"><strong>"{{ quote.text }}"</strong></p>
             <p class="quote-author"><em>- {{ quote.author }}</em></p>
-        </div>
-        <div class="category">
-            <p class="quote-category"><strong>Category:</strong> {{ quote.category.name }}</p>
+            <p>이 명언을 즐겨찾기에 추가하였습니다.</p>
         </div>
     </div>
 </body>
