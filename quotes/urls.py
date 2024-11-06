@@ -10,5 +10,9 @@ urlpatterns = [
         name="random_quote_by_category",
     ),
     path("like/<int:quote_id>/", views.like_quote, name="like_quote"),
-    path("favorite/add/<int:quote_id>/", views.add_to_favorites, name="add_to_favorites")
+    path(
+        "favorite/add/<int:quote_id>/", views.add_to_favorites, name="add_to_favorites"
+    ),
+    path("add/", views.add_quote, name="add_quote"),
+    path("recommended/", views.recommended_quotes, name="recommended_quotes"),
 ]

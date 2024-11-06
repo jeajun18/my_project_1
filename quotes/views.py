@@ -1,10 +1,10 @@
 import random
 
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import Quote, Favorite
-
+from .forms import QuoteForm
+from .models import Favorite, Quote
 
 # Create your views here.
 
@@ -72,3 +72,31 @@ def add_to_favorites(request, quote_id):
     # 중복된 즐겨찾기가 생성되지 않도록 보장한다. 즉, 같은 사용자가 동일한 명언을 여러번 즐겨찾기에 추가하는 것을 방지한다.
     Favorite.objects.get_or_create(user=user, quote=quote)
     return JsonResponse({"message": "Quote added to favorites"})
+
+
+def add_quote(request):
+    # 만약 POST 요청을 받는다면.
+    if request.method == "PSOT":
+        form = QuoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # 명언 목록 페이지로 리다이렉트
+            return redirect("quote_list")
+    else:
+        form = QuoteForm()
+    return render(request, "quotes/add_quote.html", {"form": form})
+
+
+def recommended_quotes(request):
+    # 좋아요 수가 많은 명언이 먼저 오도록 정의된다. 상위 5개만.
+    top_quotes = Quote.objects.order_by("-likes")[:5]
+    data = [
+        # top_quotes 에서 가져온 명언들을 하나씩 순회하며, 각 명언에 대해 텍스트, 저자, 좋아요 수 를 딕셔너리 형식으로 저장한 리스트를 생성
+        # 이 리스트는 추천 명언 정보를 포함하여, 각 명언에 대한 기본적인 정보만을 포함한 딕셔너리로 구성된다.
+        {"text": quote.text, "author": quote.author, "likes": quote.likes}
+        for quote in top_quotes
+    ]
+    # data : 위에서 생성된 추천 명언들의 리스트
+    # safe=False : 기본적으로 JsonResponse는 딕셔너리 형식의 데이터를 JSON으로 변환하는데,
+    # 리스트는 안전하게 변환이 가능하기 때문에 safe=False 설정을 해줘야한다.
+    return JsonResponse(data, safe=False)
